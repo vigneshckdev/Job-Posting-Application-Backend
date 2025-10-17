@@ -22,7 +22,7 @@ const jobSchema = new mongoose.Schema({
         required: true
     },
     jobQualification: {
-        type: String,
+        type: [String],
         required: true
     }
 }, {timestamps: true})
