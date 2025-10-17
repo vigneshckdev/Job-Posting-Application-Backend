@@ -80,8 +80,4 @@ app.delete("/jobPostings/:id", async (req, res) => {
     }
 });
 
-
-PORT = 3000;
-app.listen(PORT,() => {
-    console.log(`Running on PORT ${PORT}`);
-})
+module.exports = app;
