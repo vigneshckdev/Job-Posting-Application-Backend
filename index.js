@@ -20,7 +20,7 @@ async function displayJobPosting(){
         console.log("Something went wrong", error);
     }
 }
-
+// -----------------Job Postings-----------------------
 app.get("/jobPostingInfo", async (req,res) => {
     try{
         const job = await displayJobPosting();
@@ -36,6 +36,7 @@ app.get("/jobPostingInfo", async (req,res) => {
     }
 })
 
+//--------------------Post Jobs---------------------------
 app.post("/jobPostings", async (req,res) => {
     try{
         const newJobs = new Jobs(req.body);
@@ -46,6 +47,39 @@ app.post("/jobPostings", async (req,res) => {
         res.status(404).json({message: "Something went wrong"});
     }
 })
+//-------------------Get Info by Id------------------------------
+app.get("/jobPostingInfo/:id", async (req, res) => {
+    try {
+        const jobId = req.params.id; // get the ID from route
+        const job = await Jobs.findById(jobId);
+
+        if (!job) {
+            return res.status(404).json({ message: "Job not found" });
+        }
+
+        res.status(200).json(job);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Something went wrong" });
+    }
+});
+//---------------------Delete Job Post---------------------------
+app.delete("/jobPostings/:id", async (req, res) => {
+    try {
+        const jobId = req.params.id;
+        const deletedJob = await Jobs.findByIdAndDelete(jobId);
+
+        if (!deletedJob) {
+            return res.status(404).json({ message: "Job not found" });
+        }
+
+        res.status(200).json({ message: "Job deleted successfully", data: deletedJob });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Something went wrong" });
+    }
+});
+
 
 PORT = 3000;
 app.listen(PORT,() => {
