@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const jobSchema = new mongoose.Schema(
   {
     jobTitle: {
@@ -11,6 +12,10 @@ const jobSchema = new mongoose.Schema(
     },
     location: {
       type: String,
+      required: true,
+    },
+    salary: {
+      type: Number,
       required: true,
     },
     jobType: {
