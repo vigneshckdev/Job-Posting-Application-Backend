@@ -1,8 +1,8 @@
 require("dotenv").config()
-const {initializeDatabase} = require("../db/db.connect");
+const {initializeDatabase} = require("./db/db.connect");
 const express = require("express");
 const app = express();
-const Jobs = require("../models/jobs.models");
+const Jobs = require("./models/jobs.models");
 app.use(express.json());
 initializeDatabase();
 
