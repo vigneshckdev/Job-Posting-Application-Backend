@@ -28,7 +28,7 @@ app.get("/jobPostingInfo", async (req,res) => {
             res.json(job);
         }
         else{
-            res.status(404).json({message: "No jobs found"});
+            res.status(500).json({message: "No jobs found"});
         }
     }
     catch(error){
@@ -39,8 +39,8 @@ app.get("/jobPostingInfo", async (req,res) => {
 app.post("/jobPostings", async (req,res) => {
     try{
         const newJobs = new Jobs(req.body);
-        const savedJobs = new newJobs.save();
-        req.status(200).json({message: "Jobs saved", data: savedJobs});
+        const savedJobs = await newJobs.save();
+        res.status(200).json({message: "Jobs saved", data: savedJobs});
     }
     catch(error){
         res.status(404).json({message: "Something went wrong"});
