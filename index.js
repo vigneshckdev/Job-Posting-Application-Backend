@@ -8,6 +8,8 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// Initialize DB
 initializeDatabase();
 
 // -----------------Root Route-----------------------
@@ -21,7 +23,8 @@ async function displayJobPosting() {
     const jobs = await Jobs.find();
     return jobs;
   } catch (error) {
-    console.log("Something went wrong", error);
+    console.error("Error in displayJobPosting:", error.message);
+    throw error; // rethrow so route can catch it
   }
 }
 
@@ -35,6 +38,7 @@ app.get("/jobPostingInfo", async (req, res) => {
       res.status(404).json({ message: "No jobs found" });
     }
   } catch (error) {
+    console.error("Error fetching job postings:", error.message);
     res.status(500).json({ message: "Something went wrong" });
   }
 });
@@ -46,6 +50,7 @@ app.post("/jobPostings", async (req, res) => {
     const savedJobs = await newJobs.save();
     res.status(200).json({ message: "Jobs saved", data: savedJobs });
   } catch (error) {
+    console.error("Error saving job:", error.message);
     res.status(500).json({ message: "Something went wrong" });
   }
 });
@@ -60,6 +65,7 @@ app.get("/jobPostingInfo/:id", async (req, res) => {
     }
     res.status(200).json(job);
   } catch (error) {
+    console.error("Error fetching job by ID:", error.message);
     res.status(500).json({ message: "Something went wrong" });
   }
 });
@@ -74,11 +80,12 @@ app.delete("/jobPostings/:id", async (req, res) => {
     }
     res.status(200).json({ message: "Job deleted successfully", data: deletedJob });
   } catch (error) {
+    console.error("Error deleting job:", error.message);
     res.status(500).json({ message: "Something went wrong" });
   }
 });
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5000;
 
 if (require.main === module) {
   app.listen(PORT, () => {
